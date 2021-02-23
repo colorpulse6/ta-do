@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div class="sidebar">
-      <p>date</p>
-    </div>
+  <div class="sidebar">
+    <p>date</p>
   </div>
 </template>
 
@@ -21,6 +19,7 @@ export default class Sidebar extends Vue {}
   top: 0;
   left: 0;
   padding-top: 40px;
-  background-color: lightblue;
+  /* background-color: lightblue; */
+  border-right: 1px solid #2c3e50;
 }
 </style>
