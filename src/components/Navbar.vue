@@ -4,12 +4,8 @@
       <router-link to="/">Today </router-link>
       <router-link to="/date">Date</router-link>
       <router-link to="/timeline">Timeline</router-link>
-      <router-link class="butts" to="/history"
-        ><img
-          v-if="checkIfHistory"
-          class="nav-history-icon"
-          src="@/assets/history-icon-active.png"
-        />
+      <router-link class="nav-history-icon" to="/history"
+        ><img v-if="checkIfHistory" src="@/assets/history-icon-active.png" />
         <img v-else class="nav-history-icon" src="@/assets/history-icon.png" />
       </router-link>
     </div>
@@ -33,6 +29,7 @@ export default {
   width: 80%;
   margin-left: 20%;
 }
+
 .nav-container {
   display: flex;
   text-align: center;
@@ -41,21 +38,34 @@ export default {
   margin: 0 45px 0 45px;
 }
 
-#nav a {
-  font-weight: bold;
+.nav-container a {
+  /* font-weight: bold; */
   color: #2c3e50;
   font-size: 36px;
+  padding: 0px 30px 0 30px;
+  display: inline-block;
   text-decoration: none;
-  padding: 30px 30px 0 30px;
 }
 
-#nav a.router-link-exact-active:not(.butts) {
+.nav-container a::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #3a86ff;
+  transition: width 0.3s;
+}
+
+.nav-container a.router-link-exact-active:not(.nav-history-icon)::after {
   color: #3a86ff;
-  border-bottom: 3px solid #3a86ff;
-  margin-top: 3px;
+  width: 100%;
 }
 
-.nav-history-icon {
+.nav-container a.router-link-exact-active {
+  color: #3a86ff;
+}
+
+.nav-history-icon * {
   width: 45px;
 }
 

@@ -4,14 +4,13 @@
       {{ dateToday() }}
     </header>
     <div>
-      <app-job-category :key="index" v-for="(category, index) in 5">
-      </app-job-category>
+      <app-category :key="index" v-for="(category, index) in 5"> </app-category>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import JobCategory from '../components/JobCategory.vue';
+import Category from '../components/Category.vue';
 import moment from 'moment';
 
 export default {
@@ -20,6 +19,12 @@ export default {
       return moment().format('dddd, ll');
     }
   },
-  components: { 'app-job-category': JobCategory }
+  components: { 'app-category': Category }
 };
 </script>
+
+<style>
+.today {
+  margin: 20px;
+}
+</style>
