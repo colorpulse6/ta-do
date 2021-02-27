@@ -1,36 +1,41 @@
 <template>
-  <div class="category-page">
-    <div class="category">
-      <p>Category</p>
-      <img
-        @click="setShowCategory"
-        class="category-images"
-        src="@/assets/down-arrow.png"
-      />
-    </div>
-    <div v-if="showCategory">
-      <li v-for="todo in todos" :key="todo">{{ todo.title }}</li>
-
-      <form v-on-clickaway="clickAway" @submit.prevent="onSubmit">
-        <button class="noBackground" type="submit">
-          <img
-            class="category-images"
-            src="@/assets/plus-sign-green.png"
-            alt=""
-            @click="!showInput ? (showInput = true) : null"
-          />
-        </button>
-        <input
-          v-if="showInput"
-          type="text"
-          id="new-todo-input"
-          name="new-todo"
-          autocomplete="off"
-          v-model="label"
+  <div>
+    <div
+      class="category-page"
+      v-for="(category, index) in categories"
+      :key="index"
+    >
+      <div class="category">
+        <p class="category-name">{{ category.name }}</p>
+        <img
+          @click="setShowCategory"
+          class="category-images"
+          src="@/assets/down-arrow.png"
         />
+      </div>
+      <div v-if="showCategory">
+        <li v-for="todo in todos" :key="todo">{{ todo.title }}</li>
 
-        <label v-else>New Todo</label>
-      </form>
+        <form v-on-clickaway="clickAway" @submit.prevent="onSubmit">
+          <button class="noBackground" type="submit">
+            <img
+              class="category-images"
+              src="@/assets/plus-sign-green.png"
+              alt=""
+              @click="!showInput ? (showInput = true) : null"
+            />
+          </button>
+          <input
+            v-if="showInput"
+            type="text"
+            id="new-todo-input"
+            name="new-todo"
+            autocomplete="off"
+            v-model="label"
+          />
+          <label v-else>New Todo</label>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -53,6 +58,7 @@ interface Todo {
 const clickaway = require('vue-clickaway').mixin;
 
 export default {
+  props: ['categories'],
   mixins: [clickaway],
   // template: '<p v-on-clickaway="away">Click away</p>',
   data(): Data {
@@ -93,6 +99,9 @@ export default {
 <style>
 .category {
   display: flex;
+}
+.category-name {
+  font-size: 24;
 }
 .category-images {
   width: 10px;
