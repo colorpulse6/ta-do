@@ -8,12 +8,12 @@
       <div class="category">
         <p class="category-name">{{ category.name }}</p>
         <img
-          @click="setShowCategory"
+          @click="setShowCategory(category.id)"
           class="category-images"
           src="@/assets/down-arrow.png"
         />
       </div>
-      <div v-if="showCategory">
+      <div v-if="showCategory && category.id === activeCategory">
         <li v-for="todo in todos" :key="todo">{{ todo.title }}</li>
 
         <form v-on-clickaway="clickAway" @submit.prevent="onSubmit">
@@ -47,6 +47,7 @@ interface Data {
   todoInput: string;
   todos: Array<Todo>;
   label: string;
+  activeCategory: number | null;
 }
 
 interface Todo {
@@ -67,12 +68,14 @@ export default {
       showInput: false,
       todoInput: '',
       todos: [],
-      label: ''
+      label: '',
+      activeCategory: null
     };
   },
   methods: {
-    setShowCategory: function() {
+    setShowCategory: function(categoryId: number) {
       this.showCategory = !this.showCategory;
+      this.activeCategory = categoryId;
       if (this.showCategory && this.showInput) {
         this.showInput = false;
       }

@@ -53,7 +53,9 @@ export default {
     addCategory() {
       console.log(this.label);
       categoryId++;
-      this.categories.push({ name: this.label, id: categoryId });
+      if (this.label != '') {
+        this.categories.push({ name: this.label, id: categoryId });
+      }
     }
   },
   components: { 'app-category': Category }
