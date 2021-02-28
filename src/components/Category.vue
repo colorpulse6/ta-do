@@ -1,40 +1,21 @@
 <template>
   <div>
-    <div
-      class="category-page"
-      v-for="(category, index) in categories"
-      :key="index"
-    >
+    <div v-for="(category, index) in categories" :key="index">
       <div class="category">
+        <div
+          class="category-color"
+          :style="{ 'background-color': category.color }"
+        ></div>
         <p class="category-name">{{ category.name }}</p>
         <img
           @click="setShowCategory(category.id)"
-          class="category-images"
+          class="down-arrow"
           src="@/assets/down-arrow.png"
         />
       </div>
-      <div v-if="showCategory && category.id === activeCategory">
-        <li v-for="todo in todos" :key="todo">{{ todo.title }}</li>
 
-        <form v-on-clickaway="clickAway" @submit.prevent="onSubmit">
-          <button class="noBackground" type="submit">
-            <img
-              class="category-images"
-              src="@/assets/plus-sign-green.png"
-              alt=""
-              @click="!showInput ? (showInput = true) : null"
-            />
-          </button>
-          <input
-            v-if="showInput"
-            type="text"
-            id="new-todo-input"
-            name="new-todo"
-            autocomplete="off"
-            v-model="label"
-          />
-          <label v-else>New Todo</label>
-        </form>
+      <div v-if="activeCategory.includes(category.id)">
+        <app-todo></app-todo>
       </div>
     </div>
   </div>
@@ -47,7 +28,7 @@ interface Data {
   todoInput: string;
   todos: Array<Todo>;
   label: string;
-  activeCategory: number | null;
+  activeCategory: Array<number>;
 }
 
 interface Todo {
@@ -57,11 +38,11 @@ interface Todo {
 }
 
 const clickaway = require('vue-clickaway').mixin;
-
+import Todo from './Todo';
 export default {
   props: ['categories'],
   mixins: [clickaway],
-  // template: '<p v-on-clickaway="away">Click away</p>',
+  components: { 'app-todo': Todo },
   data(): Data {
     return {
       showCategory: false,
@@ -69,31 +50,38 @@ export default {
       todoInput: '',
       todos: [],
       label: '',
-      activeCategory: null
+      activeCategory: []
     };
   },
   methods: {
     setShowCategory: function(categoryId: number) {
       this.showCategory = !this.showCategory;
-      this.activeCategory = categoryId;
+      if (this.activeCategory.includes(categoryId)) {
+        this.activeCategory.splice(this.activeCategory.indexOf(categoryId), 1);
+      } else {
+        this.activeCategory.push(categoryId);
+      }
       if (this.showCategory && this.showInput) {
         this.showInput = false;
       }
-      console.log(this.showCategory, this.showInput);
+      console.log(this.activeCategory);
     },
 
     onSubmit() {
       console.log('Label value: ', this.label);
-      if (this.label !== '')
+      if (this.label !== '') {
         this.todos.push({
           title: this.label,
           category: 'category',
           complete: false
         });
+        this.label = '';
+      }
     },
     clickAway() {
       console.log('clicked away');
       this.showInput = false;
+      this.label = '';
     }
   }
 };
@@ -102,23 +90,58 @@ export default {
 <style>
 .category {
   display: flex;
+  align-items: center;
+  margin: 20px 20px;
 }
+
 .category-name {
   font-size: 24;
+  margin: 0;
+  font-weight: bold;
+}
+.down-arrow {
+  width: 8px;
+  margin-top: -5px;
+  margin-left: 4px;
+}
+.category-color {
+  width: 10px;
+  height: 15px;
+  margin-top: -1px;
+  margin-right: 2px;
 }
 .category-images {
-  width: 10px;
   align-self: center;
   padding-left: 5px;
   cursor: pointer;
 }
-.flex {
-  display: flex;
+.new-category {
+  width: 15px;
+}
+
+.new-todo {
+  width: 10px;
+  margin-left: 50px;
+}
+
+.todo-label {
+  position: absolute;
+}
+
+.todo {
+  margin-left: 50px;
 }
 
 .noBackground {
   background: none;
   border: none;
+  outline: none;
+}
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid black;
   outline: none;
 }
 </style>
