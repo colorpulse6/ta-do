@@ -22,15 +22,15 @@
           <div v-if="showInput" class="input-div">
             <input
               type="text"
-              id="new-todo-input"
-              name="new-todo"
+              id="new-category-input"
+              name="new-category"
               autocomplete="off"
               v-model="label"
-              class="todo-input"
+              class="category-input"
             />
             <verte
               picker="wheel"
-              value="#f03f"
+              value="#7817fc"
               v-model="categoryColor"
               :style="{ width: '15px', cursor: 'pointer' }"
             ></verte>
@@ -94,15 +94,14 @@ export default {
           color: this.categoryColor
         });
         this.label = '';
+        this.showInput = false;
       }
     },
     clickAway() {
       console.log('clicked away');
       this.showInput = false;
-      this.label = '';
-    },
-    handleColorPicker() {
-      console.log(this.categoryColor);
+
+      this.addCategory();
     }
   },
   components: { 'app-category': Category, verte }
@@ -125,12 +124,15 @@ export default {
 .category-label {
   position: absolute;
   margin-left: 30px;
+  font-size: 24px;
 }
 
-.todo-input {
+.category-input {
   width: 100%;
+  font-size: 24px;
 }
 
+/* Animations */
 .grow-enter-active {
   animation: 0.5s in-out forwards;
 }
@@ -144,9 +146,11 @@ export default {
   opacity: 0;
 }
 
-.fade-enter-active,
+.fade-enter-active {
+  transition: opacity 0.8s;
+}
 .fade-leave-active {
-  transition: opacity 0.2s;
+  transition: opacity 0.3s;
 }
 
 @keyframes in-out {
@@ -169,5 +173,25 @@ export default {
     transform: scaleX(1);
     transform-origin: left;
   }
+}
+
+@keyframes in-down {
+  0% {
+    transform: scaleY(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: left;
+  }
+}
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  margin-top: -1px;
+  margin-bottom: -1px;
 }
 </style>

@@ -23,65 +23,26 @@
 
 <script lang="ts">
 interface Data {
-  showCategory: boolean;
-  showInput: boolean;
-  todoInput: string;
-  todos: Array<Todo>;
-  label: string;
   activeCategory: Array<number>;
 }
 
-interface Todo {
-  title: string;
-  category: string;
-  complete: boolean;
-}
-
-const clickaway = require('vue-clickaway').mixin;
 import Todo from './Todo';
 export default {
   props: ['categories'],
-  mixins: [clickaway],
   components: { 'app-todo': Todo },
+
   data(): Data {
     return {
-      showCategory: false,
-      showInput: false,
-      todoInput: '',
-      todos: [],
-      label: '',
       activeCategory: []
     };
   },
   methods: {
     setShowCategory: function(categoryId: number) {
-      this.showCategory = !this.showCategory;
       if (this.activeCategory.includes(categoryId)) {
         this.activeCategory.splice(this.activeCategory.indexOf(categoryId), 1);
       } else {
         this.activeCategory.push(categoryId);
       }
-      if (this.showCategory && this.showInput) {
-        this.showInput = false;
-      }
-      console.log(this.activeCategory);
-    },
-
-    onSubmit() {
-      console.log('Label value: ', this.label);
-      if (this.label !== '') {
-        this.todos.push({
-          title: this.label,
-          category: 'category',
-          complete: false
-        });
-        this.label = '';
-      }
-    },
-    clickAway() {
-      console.log('clicked away');
-      this.showInput = false;
-      this.label = '';
     }
   }
 };
@@ -95,7 +56,7 @@ export default {
 }
 
 .category-name {
-  font-size: 24;
+  font-size: 24px;
   margin: 0;
   font-weight: bold;
 }
@@ -103,12 +64,13 @@ export default {
   width: 8px;
   margin-top: -5px;
   margin-left: 4px;
+  cursor: pointer;
 }
 .category-color {
-  width: 10px;
-  height: 15px;
+  width: 8px;
+  height: 18px;
   margin-top: -1px;
-  margin-right: 2px;
+  margin-right: 5px;
 }
 .category-images {
   align-self: center;
@@ -119,29 +81,9 @@ export default {
   width: 15px;
 }
 
-.new-todo {
-  width: 10px;
-  margin-left: 50px;
-}
-
-.todo-label {
-  position: absolute;
-}
-
-.todo {
-  margin-left: 50px;
-}
-
 .noBackground {
   background: none;
   border: none;
-  outline: none;
-}
-
-input {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid black;
   outline: none;
 }
 </style>
