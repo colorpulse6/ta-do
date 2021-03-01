@@ -26,7 +26,7 @@ interface Data {
   activeCategory: Array<number>;
 }
 
-import Todo from './Todo';
+import Todo from './Todo.vue';
 export default {
   props: ['categories'],
   components: { 'app-todo': Todo },

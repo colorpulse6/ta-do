@@ -97,7 +97,7 @@ export default {
 
 <style>
 .todo-input {
-  font-size: 18px;
+  font-size: 14px;
 }
 .new-todo {
   width: 10px;
@@ -106,7 +106,7 @@ export default {
 
 .todo-label {
   position: absolute;
-  font-size: 18px;
+  font-size: 14px;
   cursor: pointer;
   margin-top: -5px;
   color: #2c3e50;
