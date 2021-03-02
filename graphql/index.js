@@ -8,7 +8,7 @@ Vue.use(VueApollo);
 
 // All the graphql requests will be made at yourdomaine.com/graphql
 const httpLink = new HttpLink({
-  uri: '/graphql'
+  uri: 'http://localhost:4000//graphql'
 });
 
 // Cache implementation
@@ -21,6 +21,4 @@ const apolloClient = new ApolloClient({
 });
 
 // And we reference this client needed by vue-apollo
-export default new VueApollo({
-  defaultClient: apolloClient
-});
+export default apolloClient;

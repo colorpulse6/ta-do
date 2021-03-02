@@ -15,7 +15,7 @@
       </div>
 
       <div v-if="activeCategory.includes(category.id)">
-        <app-todo></app-todo>
+        <app-todo :categoryName="category.name"></app-todo>
       </div>
     </div>
   </div>
@@ -24,17 +24,37 @@
 <script lang="ts">
 interface Data {
   activeCategory: Array<number>;
+  categories: Array<Category>;
+}
+interface Category {
+  name: string;
+  id: number;
+  color: string;
 }
 
 import Todo from './Todo.vue';
+import gql from 'graphql-tag';
+
 export default {
-  props: ['categories'],
+  // props: ['categories'],
   components: { 'app-todo': Todo },
 
   data(): Data {
     return {
-      activeCategory: []
+      activeCategory: [],
+      categories: []
     };
+  },
+  apollo: {
+    categories: {
+      query: gql`
+        query {
+          categories {
+            name
+          }
+        }
+      `
+    }
   },
   methods: {
     setShowCategory: function(categoryId: number) {

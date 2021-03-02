@@ -19,8 +19,9 @@ Vue.component('app-sidebar', Sidebar);
 Vue.component('app-navbar', Navbar);
 
 new Vue({
+  apolloProvider,
   router,
   store,
-  apolloProvider,
+
   render: h => h(App)
 }).$mount('#app');

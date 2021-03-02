@@ -57,6 +57,7 @@ interface Todo {
 const clickaway = require('vue-clickaway').mixin;
 
 export default {
+  props: ['categoryName'],
   mixins: [clickaway],
 
   data(): Data {
@@ -68,13 +69,14 @@ export default {
       strikeThrough: ''
     };
   },
+
   methods: {
     addTodo() {
       console.log('Label value: ', this.label);
       if (this.label !== '') {
         this.todos.push({
           title: this.label,
-          category: 'category',
+          category: this.categoryName,
           complete: false
         });
         this.label = '';
@@ -84,6 +86,7 @@ export default {
     completeTodo(index: number) {
       this.todos[index].complete = !this.todos[index].complete;
       console.log(this.todos[index].complete);
+      console.log(this.todos);
     },
 
     clickAway() {
