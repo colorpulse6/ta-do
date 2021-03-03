@@ -4,18 +4,16 @@
       {{ dateToday() }}
     </header>
     <app-category> </app-category>
-    <app-add-category></app-add-category>
   </div>
 </template>
 
 <script lang="ts">
-import AddCategory from '../components/AddCategory';
 import Category from '../components/Category';
 
 import moment from 'moment';
 
 export default {
-  components: { 'app-add-category': AddCategory, 'app-category': Category },
+  components: { 'app-category': Category },
   methods: {
     dateToday() {
       return moment().format('dddd, ll');

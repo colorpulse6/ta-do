@@ -8,16 +8,17 @@
         ></div>
         <p class="category-name">{{ category.name }}</p>
         <img
-          @click="setShowCategory(category.id)"
+          @click="setShowCategory(index)"
           class="down-arrow"
           src="@/assets/down-arrow.png"
         />
       </div>
 
-      <div v-if="activeCategory.includes(category.id)">
+      <div v-if="activeCategory.includes(index)">
         <app-todo :categoryName="category.name"></app-todo>
       </div>
     </div>
+    <app-add-category :categories="categories"></app-add-category>
   </div>
 </template>
 
@@ -33,11 +34,12 @@ interface Category {
 }
 
 import Todo from './Todo.vue';
+import AddCategory from './AddCategory';
+
 import { getCategories } from '../../graphql/functions';
 
 export default {
-  // props: ['categories'],
-  components: { 'app-todo': Todo },
+  components: { 'app-todo': Todo, 'app-add-category': AddCategory },
 
   data(): Data {
     return {
@@ -51,11 +53,11 @@ export default {
     }
   },
   methods: {
-    setShowCategory: function(categoryId: number) {
-      if (this.activeCategory.includes(categoryId)) {
-        this.activeCategory.splice(this.activeCategory.indexOf(categoryId), 1);
+    setShowCategory: function(index: number) {
+      if (this.activeCategory.includes(index)) {
+        this.activeCategory.splice(this.activeCategory.indexOf(index), 1);
       } else {
-        this.activeCategory.push(categoryId);
+        this.activeCategory.push(index);
       }
     }
   }

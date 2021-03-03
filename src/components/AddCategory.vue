@@ -45,33 +45,28 @@
 
 <script lang="ts">
 import gql from 'graphql-tag';
-import Category from '../components/Category.vue';
 import verte from 'verte';
 import 'verte/dist/verte.css';
 const clickaway = require('vue-clickaway').mixin;
 interface Data {
   name: string;
-  categories: Array<Category>;
 
   showInput: boolean;
   showChooseColor: boolean;
   color: string;
 }
 
-interface Category {
-  name: string;
-  color: string;
-}
 // let categoryId = 1;
 export default {
   mixins: [clickaway],
   components: { verte },
+  props: ['categories'],
 
   data(): Data {
     return {
       name: '',
       color: '',
-      categories: [],
+
       showInput: false,
       showChooseColor: false
     };
@@ -81,32 +76,32 @@ export default {
       this.showInput = !this.showInput;
     },
     addCategory() {
-      console.log(this.name);
-      this.$apollo
-        .mutate({
-          mutation: gql`
-            mutation addCategory($name: String, $color: String) {
-              addCategory(name: $name, color: $color) {
-                name
-                color
+      if (this.name != '')
+        this.$apollo
+          .mutate({
+            mutation: gql`
+              mutation addCategory($name: String!, $color: String) {
+                addCategory(name: $name, color: $color) {
+                  name
+                  color
+                }
               }
+            `,
+            variables: {
+              name: this.name,
+              color: this.color
             }
-          `,
-          variables: {
-            name: this.name,
-            color: this.color
-          }
-        })
-        .then(response => {
-          this.categories = response.data.addCategory; //adding it to our previous query
-          location.reload();
-        });
+          })
+          .then(response => {
+            this.categories.poush(response.data.addCategory); //adding it to our previous query
+            location.reload();
+          });
     },
     clickAway() {
       console.log('clicked away');
       this.showInput = false;
 
-      //   this.addCategory();
+      this.addCategory();
     }
   }
 };

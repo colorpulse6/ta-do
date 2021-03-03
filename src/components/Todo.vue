@@ -10,43 +10,13 @@
         {{ todo.title }}
       </p>
     </div>
-    <form v-on-clickaway="clickAway" @submit.prevent="addTodo" ref="todoInput">
-      <button class="noBackground" type="submit">
-        <div @click="!showInput ? (showInput = true) : (showInput = false)">
-          <img
-            class="category-images new-todo"
-            src="@/assets/plus-sign-green.png"
-            alt=""
-          />
-
-          <transition name="fade">
-            <label class="todo-label" v-show="!showInput">New Todo</label>
-          </transition>
-        </div>
-      </button>
-
-      <transition name="grow">
-        <input
-          v-show="showInput"
-          type="text"
-          id="new-todo-input"
-          name="new-todo"
-          autocomplete="off"
-          v-model="label"
-          class="todo-input"
-        />
-      </transition>
-    </form>
+    <app-add-todo :categoryName="categoryName" :todos="todos"></app-add-todo>
   </div>
 </template>
 
 <script lang="ts">
 interface Data {
-  showInput: boolean;
-  todoInput: string;
   todos: Array<Todo>;
-  label: string;
-  strikeThrough: string;
 }
 
 interface Todo {
@@ -55,19 +25,15 @@ interface Todo {
   complete: boolean;
 }
 import gql from 'graphql-tag';
-const clickaway = require('vue-clickaway').mixin;
+import AddTodo from './AddTodo';
 
 export default {
   props: ['categoryName'],
-  mixins: [clickaway],
+  components: { 'app-add-todo': AddTodo },
 
   data(): Data {
     return {
-      showInput: false,
-      todoInput: '',
-      todos: [],
-      label: '',
-      strikeThrough: ''
+      todos: []
     };
   },
   apollo: {
@@ -85,28 +51,10 @@ export default {
   },
 
   methods: {
-    addTodo() {
-      if (this.label !== '') {
-        this.todos.push({
-          title: this.label,
-          category: this.categoryName,
-          complete: false
-        });
-        this.label = '';
-        this.showInput = false;
-      }
-    },
-
     completeTodo(index: number) {
       this.todos[index].complete = !this.todos[index].complete;
       console.log(this.todos[index].complete);
       console.log(this.todos);
-    },
-
-    clickAway() {
-      console.log('clicked away');
-      this.showInput = false;
-      this.addTodo();
     }
   }
 };
