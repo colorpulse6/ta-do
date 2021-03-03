@@ -33,7 +33,7 @@ interface Category {
 }
 
 import Todo from './Todo.vue';
-import gql from 'graphql-tag';
+import { getCategories } from '../../graphql/functions';
 
 export default {
   // props: ['categories'],
@@ -47,13 +47,7 @@ export default {
   },
   apollo: {
     categories: {
-      query: gql`
-        query {
-          categories {
-            name
-          }
-        }
-      `
+      query: getCategories
     }
   },
   methods: {

@@ -1,15 +1,15 @@
 <template>
   <div>
-    <p
-      class="todo"
-      v-for="(todo, index) in todos"
-      :key="index"
-      @click="completeTodo(index)"
-      :class="{ 'strike-through': todo.complete === true }"
-    >
-      {{ todo.title }}
-    </p>
-
+    <div v-for="(todo, index) in todos" :key="index">
+      <p
+        v-if="todo.category === categoryName"
+        class="todo"
+        @click="completeTodo(index)"
+        :class="{ 'strike-through': todo.complete === true }"
+      >
+        {{ todo.title }}
+      </p>
+    </div>
     <form v-on-clickaway="clickAway" @submit.prevent="addTodo" ref="todoInput">
       <button class="noBackground" type="submit">
         <div @click="!showInput ? (showInput = true) : (showInput = false)">
@@ -54,6 +54,7 @@ interface Todo {
   category: string;
   complete: boolean;
 }
+import gql from 'graphql-tag';
 const clickaway = require('vue-clickaway').mixin;
 
 export default {
@@ -69,10 +70,22 @@ export default {
       strikeThrough: ''
     };
   },
+  apollo: {
+    todos: {
+      query: gql`
+        query {
+          todos {
+            title
+            category
+            complete
+          }
+        }
+      `
+    }
+  },
 
   methods: {
     addTodo() {
-      console.log('Label value: ', this.label);
       if (this.label !== '') {
         this.todos.push({
           title: this.label,
@@ -83,6 +96,7 @@ export default {
         this.showInput = false;
       }
     },
+
     completeTodo(index: number) {
       this.todos[index].complete = !this.todos[index].complete;
       console.log(this.todos[index].complete);

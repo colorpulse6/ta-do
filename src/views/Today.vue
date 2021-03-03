@@ -3,108 +3,24 @@
     <header class="header">
       {{ dateToday() }}
     </header>
-
-    <div>
-      <app-category :categories="categories"> </app-category>
-    </div>
-
-    <form @submit.prevent="addCategory" v-on-clickaway="clickAway">
-      <div class="add-category">
-        <button class="noBackground" type="submit">
-          <img
-            class="category-images new-category"
-            src="@/assets/plus-sign-green.png"
-            alt=""
-            @click="setShowInput"
-          />
-        </button>
-        <transition name="grow">
-          <div v-if="showInput" class="input-div">
-            <input
-              type="text"
-              id="new-category-input"
-              name="new-category"
-              autocomplete="off"
-              v-model="label"
-              class="category-input"
-            />
-            <verte
-              picker="wheel"
-              value="#7817fc"
-              v-model="categoryColor"
-              :style="{ width: '15px', cursor: 'pointer' }"
-            ></verte>
-          </div>
-        </transition>
-        <transition name="fade">
-          <label class="category-label" v-show="!showInput">New Category</label>
-        </transition>
-      </div>
-    </form>
+    <app-category> </app-category>
+    <app-add-category></app-add-category>
   </div>
 </template>
 
 <script lang="ts">
-import Category from '../components/Category.vue';
+import AddCategory from '../components/AddCategory';
+import Category from '../components/Category';
+
 import moment from 'moment';
-const clickaway = require('vue-clickaway').mixin;
-import verte from 'verte';
-import 'verte/dist/verte.css';
 
-interface Data {
-  label: string;
-  categories: Array<Category>;
-  showInput: boolean;
-  showChooseColor: boolean;
-  categoryColor: string;
-}
-
-interface Category {
-  name: string;
-  id: number;
-  color: string;
-}
-let categoryId = 1;
 export default {
-  mixins: [clickaway],
-
-  data(): Data {
-    return {
-      label: '',
-      categories: [],
-      showInput: false,
-      showChooseColor: false,
-      categoryColor: ''
-    };
-  },
+  components: { 'app-add-category': AddCategory, 'app-category': Category },
   methods: {
     dateToday() {
       return moment().format('dddd, ll');
-    },
-    setShowInput() {
-      this.showInput = !this.showInput;
-    },
-    addCategory() {
-      console.log(this.label);
-      categoryId++;
-      if (this.label != '') {
-        this.categories.push({
-          name: this.label,
-          id: categoryId,
-          color: this.categoryColor
-        });
-        this.label = '';
-        this.showInput = false;
-      }
-    },
-    clickAway() {
-      console.log('clicked away');
-      this.showInput = false;
-
-      this.addCategory();
     }
-  },
-  components: { 'app-category': Category, verte }
+  }
 };
 </script>
 
