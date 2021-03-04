@@ -44,9 +44,10 @@
 </template>
 
 <script lang="ts">
-import gql from 'graphql-tag';
 import verte from 'verte';
 import 'verte/dist/verte.css';
+import { GET_CATEGORIES, ADD_CATEGORY } from '../../graphql/functions';
+
 const clickaway = require('vue-clickaway').mixin;
 interface Data {
   name: string;
@@ -54,9 +55,7 @@ interface Data {
   showChooseColor: boolean;
   color: string;
 }
-import moment from 'moment';
 
-// let categoryId = 1;
 export default {
   mixins: [clickaway],
   components: { verte },
@@ -65,7 +64,7 @@ export default {
   data(): Data {
     return {
       name: '',
-      color: '',
+      color: '#7817fc',
       showInput: false,
       showChooseColor: false
     };
@@ -74,34 +73,27 @@ export default {
     setShowInput() {
       this.showInput = !this.showInput;
     },
-    addCategory() {
-      console.log(moment());
-
+    async addCategory() {
       if (this.name != '')
-        this.$apollo
+        await this.$apollo
           .mutate({
-            mutation: gql`
-              mutation addCategory(
-                $name: String!
-                $color: String
-                $date: String
-              ) {
-                addCategory(name: $name, color: $color, date: $date) {
-                  name
-                  color
-                  date
-                }
-              }
-            `,
+            mutation: ADD_CATEGORY,
+
             variables: {
               name: this.name,
-              color: this.color,
-              date: moment().format('dddd, ll')
-            }
+              color: this.color
+            },
+            refetchQueries: [
+              {
+                query: GET_CATEGORIES
+              }
+            ]
           })
           .then(response => {
             this.categories.push(response.data.addCategory); //adding it to our previous query
             // location.reload();
+            this.name = '';
+            this.showInput = false;
           });
     },
     clickAway() {

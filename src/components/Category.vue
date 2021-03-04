@@ -7,6 +7,7 @@
           :style="{ 'background-color': category.color }"
         ></div>
         <p class="category-name">{{ category.name }}</p>
+        <button @click="deleteCategory(category)">X</button>
         <img
           @click="setShowCategory(index)"
           class="down-arrow"
@@ -36,7 +37,7 @@ interface Category {
 
 import Todo from './Todo.vue';
 import AddCategory from './AddCategory';
-import { getCategories } from '../../graphql/functions';
+import { GET_CATEGORIES, DELETE_CATEGORY } from '../../graphql/functions';
 
 export default {
   components: { 'app-todo': Todo, 'app-add-category': AddCategory },
@@ -49,7 +50,7 @@ export default {
   },
   apollo: {
     categories: {
-      query: getCategories
+      query: GET_CATEGORIES
     }
   },
   methods: {
@@ -59,6 +60,20 @@ export default {
       } else {
         this.activeCategory.push(index);
       }
+    },
+    async deleteCategory(category: Category) {
+      console.log(category);
+      await this.$apollo.mutate({
+        mutation: DELETE_CATEGORY,
+        variables: {
+          id: category.id
+        },
+        refetchQueries: [
+          {
+            query: GET_CATEGORIES
+          }
+        ]
+      });
     }
   }
 };

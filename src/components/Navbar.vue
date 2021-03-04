@@ -1,7 +1,8 @@
 <template>
   <div id="nav">
     <div class="nav-container">
-      <router-link to="/">Today </router-link>
+      
+      <router-link to="/today">Today </router-link>
       <router-link to="/date">Date</router-link>
       <router-link to="/timeline">Timeline</router-link>
       <router-link class="nav-history-icon" to="/history"

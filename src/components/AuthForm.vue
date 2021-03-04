@@ -19,8 +19,8 @@
             required
           ></v-text-field>
         </v-col>
-        <v-btn class="ma-2" outlined color="indigo" @click="handleSignup">
-          Sign Up
+        <v-btn class="ma-2" outlined color="indigo" @click="handleLogin">
+          Login
         </v-btn>
       </v-row>
     </v-container>
@@ -45,12 +45,7 @@ export default {
       v => !!v || 'E-mail is required',
       v => /.+@.+/.test(v) || 'E-mail must be valid'
     ]
-  }),
-  methods: {
-    handleSignup() {
-      this.$emit('closeSignup', this.closeDialog);
-    }
-  }
+  })
 };
 </script>
 

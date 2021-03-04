@@ -5,8 +5,11 @@ import router from './router';
 import store from './store';
 import Sidebar from './components/Sidebar.vue';
 import Navbar from './components/Navbar.vue';
+import Landing from './views/Landing.vue';
+
 import apolloClient from '../graphql/index';
 import VueApollo from 'vue-apollo';
+import vuetify from './plugins/vuetify';
 
 Vue.use(VueApollo);
 
@@ -17,11 +20,12 @@ Vue.config.productionTip = false;
 
 Vue.component('app-sidebar', Sidebar);
 Vue.component('app-navbar', Navbar);
+Vue.component('app-landing', Landing);
 
 new Vue({
   apolloProvider,
   router,
   store,
-
+  vuetify,
   render: h => h(App)
 }).$mount('#app');

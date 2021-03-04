@@ -1,14 +1,30 @@
 <template>
-  <div id="app">
-    <div>
-      <app-navbar></app-navbar>
+  <v-app>
+    <div id="app">
+      <div>
+        <app-navbar></app-navbar>
+
+        <app-sidebar></app-sidebar>
+      </div>
+      <!-- <div>
+        <app-landing></app-landing>
+      </div> -->
     </div>
-    <app-sidebar></app-sidebar>
-  </div>
+  </v-app>
 </template>
 
-<script></script>
-
+<script lang="ts">
+interface Data {
+  isLoggedIn: boolean;
+}
+export default {
+  data(): Data {
+    return {
+      isLoggedIn: this.$store.state.isLoggedIn
+    };
+  }
+};
+</script>
 <style>
 body {
   background-color: #ffefc2;
@@ -19,7 +35,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-
 .header {
   font-size: 36px;
 }

@@ -9,8 +9,8 @@ Vue.config.productionTip = false;
 Vue.component('app-sidebar', Sidebar);
 Vue.component('app-navbar', Navbar);
 new Vue({
-    router,
-    store,
-    render: h => h(App)
+  router,
+  store,
+  render: h => h(App)
 }).$mount('#app');
 //# sourceMappingURL=main.js.map
