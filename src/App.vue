@@ -1,14 +1,14 @@
 <template>
   <v-app>
     <div id="app">
-      <div>
+      <div v-if="isLoggedIn">
         <app-navbar></app-navbar>
 
         <app-sidebar></app-sidebar>
       </div>
-      <!-- <div>
+      <div v-else>
         <app-landing></app-landing>
-      </div> -->
+      </div>
     </div>
   </v-app>
 </template>
@@ -18,10 +18,10 @@ interface Data {
   isLoggedIn: boolean;
 }
 export default {
-  data(): Data {
-    return {
-      isLoggedIn: this.$store.state.isLoggedIn
-    };
+  computed: {
+    isLoggedIn: function() {
+      return this.$store.state.isLoggedIn;
+    }
   }
 };
 </script>
