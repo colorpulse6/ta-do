@@ -31,11 +31,11 @@ interface Category {
   name: string;
   id: number;
   color: string;
+  date: string;
 }
 
 import Todo from './Todo.vue';
 import AddCategory from './AddCategory';
-
 import { getCategories } from '../../graphql/functions';
 
 export default {

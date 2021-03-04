@@ -5,6 +5,7 @@ export const getCategories = gql`
     categories {
       name
       color
+      date
     }
   }
 `;

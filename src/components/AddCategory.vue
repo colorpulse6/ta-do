@@ -50,11 +50,11 @@ import 'verte/dist/verte.css';
 const clickaway = require('vue-clickaway').mixin;
 interface Data {
   name: string;
-
   showInput: boolean;
   showChooseColor: boolean;
   color: string;
 }
+import moment from 'moment';
 
 // let categoryId = 1;
 export default {
@@ -66,7 +66,6 @@ export default {
     return {
       name: '',
       color: '',
-
       showInput: false,
       showChooseColor: false
     };
@@ -76,25 +75,33 @@ export default {
       this.showInput = !this.showInput;
     },
     addCategory() {
+      console.log(moment());
+
       if (this.name != '')
         this.$apollo
           .mutate({
             mutation: gql`
-              mutation addCategory($name: String!, $color: String) {
-                addCategory(name: $name, color: $color) {
+              mutation addCategory(
+                $name: String!
+                $color: String
+                $date: String
+              ) {
+                addCategory(name: $name, color: $color, date: $date) {
                   name
                   color
+                  date
                 }
               }
             `,
             variables: {
               name: this.name,
-              color: this.color
+              color: this.color,
+              date: moment().format('dddd, ll')
             }
           })
           .then(response => {
-            this.categories.poush(response.data.addCategory); //adding it to our previous query
-            location.reload();
+            this.categories.push(response.data.addCategory); //adding it to our previous query
+            // location.reload();
           });
     },
     clickAway() {

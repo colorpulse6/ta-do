@@ -38,11 +38,6 @@ interface Data {
   strikeThrough: string;
 }
 
-interface Todo {
-  title: string;
-  category: string;
-  complete: boolean;
-}
 import gql from 'graphql-tag';
 const clickaway = require('vue-clickaway').mixin;
 
