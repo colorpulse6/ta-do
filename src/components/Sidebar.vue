@@ -1,14 +1,25 @@
 <template>
   <div class="sidebar">
     <p>date</p>
+    <button @click="handleLogout">
+      <img src="@/assets/logout-icon.png" class="logout-image" />
+    </button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { mapActions } from 'vuex';
 
-@Component
-export default class Sidebar extends Vue {}
+export default {
+  methods: {
+    ...mapActions(['logOut']),
+    handleLogout: function() {
+      this.logOut().then(() => {
+        this.$router.push('/');
+      });
+    }
+  }
+};
 </script>
 
 <style>
@@ -21,5 +32,8 @@ export default class Sidebar extends Vue {}
   padding-top: 40px;
   /* background-color: lightblue; */
   border-right: 1px solid #2c3e50;
+}
+.logout-image {
+  width: 40px;
 }
 </style>

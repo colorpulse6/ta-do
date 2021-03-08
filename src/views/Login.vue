@@ -4,7 +4,7 @@
       <v-row class="d-flex align-center flex-column mb-6">
         <v-col cols="12" md="4">
           <v-text-field
-            v-model="email"
+            v-model="authDetails.email"
             :rules="emailRules"
             label="E-mail"
             required
@@ -12,7 +12,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <v-text-field
-            v-model="password"
+            v-model="authDetails.password"
             :rules="passwordRules"
             :counter="5"
             label="Password"
@@ -29,28 +29,34 @@
 
 <script>
 import Vuetify from 'vuetify';
+import { LOGIN_USER } from '../../graphql/functions';
+import { mapActions } from 'vuex';
 
 export default {
   vuetify: new Vuetify(),
   data: () => ({
     closeDialog: false,
     valid: false,
-    password: '',
     passwordRules: [
       v => !!v || 'Password is required',
       v => v.length <= 5 || 'Password must be less than 5 characters'
     ],
-    email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+/.test(v) || 'E-mail must be valid'
-    ]
+    ],
+    authDetails: {
+      email: '',
+      password: ''
+    }
   }),
   methods: {
-    handleLogin() {
-      this.$emit('closeLogin', this.closeDialog);
-      this.$store.state.isLoggedIn = true;
-      console.log(this.$store);
+    ...mapActions(['login']),
+    handleLogin: function() {
+      this.login(this.authDetails).then(() => {
+        this.$router.push('/today');
+        this.$emit('closeSignup', this.closeDialog);
+      });
     }
   }
 };

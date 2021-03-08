@@ -4,6 +4,8 @@ import Today from '../views/Today.vue';
 import Signup from '../views/Signup.vue';
 import Login from '../views/Login.vue';
 import Landing from '../views/Landing';
+import store from '../store';
+
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -25,32 +27,26 @@ const routes: Array<RouteConfig> = [
   {
     path: '/today',
     name: 'Today',
-    component: Today
+    component: Today,
+    meta: { requiresAuth: true }
   },
   {
     path: '/date',
     name: 'Date',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "about" */
-
-        '../views/Date.vue'
-      )
+    component: () => import('../views/Date.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/timeline',
     name: 'Timeline',
-    component: () =>
-      import(/* webpackChunkName: "timeline" */ '../views/Timeline.vue')
+    component: () => import('../views/Timeline.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/history',
     name: 'History',
-    component: () =>
-      import(/* webpackChunkName: "history" */ '../views/History.vue')
+    component: () => import('../views/History.vue'),
+    meta: { requiresAuth: true }
   }
 ];
 
@@ -58,6 +54,24 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+});
+
+// Check if the user is logged in
+router.beforeEach((to, from, next) => {
+  const isUserLoggedIn = store.getters.isAuthenticated;
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isUserLoggedIn) {
+      store.dispatch('logOut');
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
