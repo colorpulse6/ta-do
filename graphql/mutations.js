@@ -2,35 +2,18 @@ import gql from 'graphql-tag';
 
 export const GET_CATEGORIES = gql`
   query {
-    categories {
-      id
-      name
-      color
-      date
-    }
-  }
-`;
-
-export const LOGGED_IN_USER = gql`
-  query {
-    me {
-      id
-      username
-      email
+    userCategories {
+      title
     }
   }
 `;
 
 export const ADD_CATEGORY = gql`
-  mutation($name: String!, $color: String!) {
-    insert_categories(objects: { name: $name, color: $color }) {
-      affected_rows
-      returning {
-        id
-        name
-        color
-        date
-      }
+  mutation($title: String!, $color: String!, $userId: Int!) {
+    addCategory(title: $title, color: $color, userId: $userId) {
+      title
+      color
+      userId
     }
   }
 `;

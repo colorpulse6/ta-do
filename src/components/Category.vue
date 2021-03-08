@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div v-for="(category, index) in categories" :key="index">
+    <div v-for="(category, index) in userCategories" :key="index">
       <div class="category">
         <div
           class="category-color"
           :style="{ 'background-color': category.color }"
         ></div>
-        <p class="category-name">{{ category.name }}</p>
+        <p class="category-name">{{ category.title }}</p>
         <button @click="deleteCategory(category)">X</button>
         <img
           @click="setShowCategory(index)"
@@ -19,14 +19,13 @@
         <app-todo :categoryName="category.name"></app-todo>
       </div>
     </div>
-    <app-add-category :categories="categories"></app-add-category>
+    <app-add-category :userCategories="userCategories"></app-add-category>
   </div>
 </template>
 
 <script lang="ts">
 interface Data {
   activeCategory: Array<number>;
-  categories: Array<Category>;
 }
 interface Category {
   name: string;
@@ -37,19 +36,18 @@ interface Category {
 
 import Todo from './Todo.vue';
 import AddCategory from './AddCategory';
-import { GET_CATEGORIES, DELETE_CATEGORY } from '../../graphql/functions';
+import { GET_CATEGORIES, DELETE_CATEGORY } from '../../graphql/mutations';
 
 export default {
   components: { 'app-todo': Todo, 'app-add-category': AddCategory },
 
   data(): Data {
     return {
-      activeCategory: [],
-      categories: []
+      activeCategory: []
     };
   },
   apollo: {
-    categories: {
+    userCategories: {
       query: GET_CATEGORIES
     }
   },

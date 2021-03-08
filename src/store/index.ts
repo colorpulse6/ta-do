@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { onLogout, apolloClient } from '../../graphql/index';
-import { LOGIN_USER, ADD_USER } from '../../graphql/functions';
+import { LOGIN_USER, ADD_USER } from '../../graphql/mutations';
 import { LOGGED_IN_USER } from '../../graphql/queries';
 
 Vue.use(Vuex);

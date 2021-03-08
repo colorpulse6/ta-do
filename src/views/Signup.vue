@@ -38,7 +38,7 @@
 <script>
 import Vuetify from 'vuetify';
 import { mapActions } from 'vuex';
-import { ADD_USER } from '../../graphql/functions';
+import { ADD_USER } from '../../graphql/mutations';
 import apolloClient from '../../graphql/index';
 
 export default {

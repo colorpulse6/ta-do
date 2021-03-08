@@ -29,7 +29,7 @@
 
 <script>
 import Vuetify from 'vuetify';
-import { LOGIN_USER } from '../../graphql/functions';
+import { LOGIN_USER } from '../../graphql/mutations';
 import { mapActions } from 'vuex';
 
 export default {

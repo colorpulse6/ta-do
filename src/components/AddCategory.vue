@@ -24,7 +24,7 @@
             id="new-category-input"
             name="new-category"
             autocomplete="off"
-            v-model="name"
+            v-model="title"
             class="category-input"
           />
           <verte
@@ -46,11 +46,11 @@
 <script lang="ts">
 import verte from 'verte';
 import 'verte/dist/verte.css';
-import { GET_CATEGORIES, ADD_CATEGORY } from '../../graphql/functions';
+import { GET_CATEGORIES, ADD_CATEGORY } from '../../graphql/mutations';
 
 const clickaway = require('vue-clickaway').mixin;
 interface Data {
-  name: string;
+  title: string;
   showInput: boolean;
   showChooseColor: boolean;
   color: string;
@@ -59,11 +59,11 @@ interface Data {
 export default {
   mixins: [clickaway],
   components: { verte },
-  props: ['categories'],
+  props: ['userCategories'],
 
   data(): Data {
     return {
-      name: '',
+      title: '',
       color: '#7817fc',
       showInput: false,
       showChooseColor: false
@@ -74,15 +74,17 @@ export default {
       this.showInput = !this.showInput;
     },
     async addCategory() {
-      if (this.name != '')
+      if (this.title != '')
         await this.$apollo
           .mutate({
             mutation: ADD_CATEGORY,
 
             variables: {
-              name: this.name,
-              color: this.color
+              title: this.title,
+              color: this.color,
+              userId: this.$store.state.user.id
             },
+
             refetchQueries: [
               {
                 query: GET_CATEGORIES
@@ -90,9 +92,9 @@ export default {
             ]
           })
           .then(response => {
-            this.categories.push(response.data.addCategory); //adding it to our previous query
+            this.userCategories.push(response.data.addCategory); //adding it to our previous query
             // location.reload();
-            this.name = '';
+            this.title = '';
             this.showInput = false;
           });
     },
