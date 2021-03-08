@@ -32,6 +32,7 @@
 import Vuetify from 'vuetify';
 import Signup from '../views/Signup';
 import Login from '../views/Login';
+// import gql from 'graphql-tag';
 
 export default {
   components: { 'app-signup': Signup, 'app-login': Login },
@@ -40,6 +41,19 @@ export default {
     signupDialog: false,
     loginDialog: false
   })
+  // apollo: {
+  //   // Simple query that will update the 'hello' vue property
+  //   hello: gql`
+  //     gql`
+  // query {
+  //   me {
+  //     id
+  //     name
+  //     email
+  //   }
+  // }
+  // `
+  // }
 };
 </script>
 <style scoped></style>
